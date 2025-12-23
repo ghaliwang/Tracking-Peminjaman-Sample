@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, Tk
 from tkinter import ttk
 import os
 import pandas as pd
@@ -7,6 +7,21 @@ from datetime import datetime
 from PIL import Image, ImageTk
 import cv2
 import sys
+import win32event
+import win32api
+import winerror
+
+# ===== SINGLE INSTANCE CHECK =====
+mutex = win32event.CreateMutex(None, False, "FQC_SAMPLE_TRACKER_MUTEX")
+
+if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
+    root = Tk()
+    root.withdraw()
+    messagebox.showerror(
+        "Aplikasi sudah berjalan",
+        "Aplikasi ini sudah terbuka.\nSilakan cek di taskbar atau system tray."
+    )
+    sys.exit(0)
 
 class SearchableDropdown(tk.Frame):
     def __init__(self, master, values, on_select=None, width=20):
