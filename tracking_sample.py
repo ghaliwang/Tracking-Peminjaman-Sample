@@ -585,6 +585,26 @@ def backup_data():
             f"Terjadi kesalahan saat backup:\n{str(e)}"
         )
 
+def open_backup_password():
+    pwd_win = tk.Toplevel(root)
+    pwd_win.title("Masukan Password")
+    pwd_win.geometry("300x150")
+    pwd_win.resizable(False, False)
+    pwd_win.grab_set()  # kunci fokus
+
+    tk.Label(pwd_win, text="Masukan Password:").pack(pady=15)
+
+    pwd_entry = tk.Entry(pwd_win, show="*", width=25)
+    pwd_entry.pack()
+
+    def check_password():
+        if pwd_entry.get() == "penghancurpintu":
+            pwd_win.destroy()
+            backup_data()
+        else:
+            messagebox.showerror("Error", "Password salah!")
+
+    tk.Button(pwd_win, text="OK", width=12, command=check_password).pack(pady=15)
 
 
 
@@ -687,7 +707,7 @@ btn_about = tk.Button(form_frame, text="About", command=open_about_window, width
 btn_about.grid(row=8, column=0, columnspan=2, pady=5)
 btn_history = tk.Button(form_frame,text="History Peminjaman",width=20,command=buka_history)
 btn_history.grid(row=6,column=0,columnspan=2,pady=10)
-btn_backup = tk.Button(form_frame, text="Back Up", width=20, command=backup_data)
+btn_backup = tk.Button(form_frame, text="Back Up", width=20, command=open_backup_password)
 btn_backup.grid(row=7, column=0, columnspan=2, pady=5)
 
 list_frame = tk.LabelFrame(root,text="ID Aktif (Belum Kembali)",padx=10,pady=10)
