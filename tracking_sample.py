@@ -545,7 +545,7 @@ def open_about_window():
         "PT Langgeng Buana Jaya\n"
         "Final Quality Control\n"
         "Tracking Sample\n"
-        "V3.1\n\n"
+        "V3.2\n\n"
         "Dibuat oleh Team FQC Penghancur Pintu Part 2."
     )
 
