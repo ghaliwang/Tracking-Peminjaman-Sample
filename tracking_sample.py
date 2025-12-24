@@ -10,6 +10,7 @@ import sys
 import win32event
 import win32api
 import winerror
+import shutil
 
 # ===== SINGLE INSTANCE CHECK =====
 mutex = win32event.CreateMutex(None, False, "FQC_SAMPLE_TRACKER_MUTEX")
@@ -555,7 +556,34 @@ def open_about_window():
         justify="center"
     ).pack(pady=10)
 
+def backup_data():
+    try:
+        # Format nama folder backup: DDMMYYYY HH.MM
+        timestamp = datetime.now().strftime("%d%m%Y %H.%M")
+        backup_dir = os.path.join(base_dir, timestamp)
 
+        # Buat folder backup
+        os.makedirs(backup_dir, exist_ok=False)
+
+        # ---- Backup file Excel ----
+        excel_backup_path = os.path.join(backup_dir, "record_peminjaman.xlsx")
+        shutil.copy2(excel_file, excel_backup_path)
+
+        # ---- Backup folder foto ----
+        foto_backup_path = os.path.join(backup_dir, "foto")
+        if os.path.exists(foto_dir):
+            shutil.copytree(foto_dir, foto_backup_path)
+
+        messagebox.showinfo(
+            "Backup Sukses",
+            f"Backup berhasil dibuat di:\n{backup_dir}"
+        )
+
+    except Exception as e:
+        messagebox.showerror(
+            "Backup Gagal",
+            f"Terjadi kesalahan saat backup:\n{str(e)}"
+        )
 
 
 
@@ -659,6 +687,8 @@ btn_about = tk.Button(form_frame, text="About", command=open_about_window, width
 btn_about.grid(row=8, column=0, columnspan=2, pady=5)
 btn_history = tk.Button(form_frame,text="History Peminjaman",width=20,command=buka_history)
 btn_history.grid(row=6,column=0,columnspan=2,pady=10)
+btn_backup = tk.Button(form_frame, text="Back Up", width=20, command=backup_data)
+btn_backup.grid(row=7, column=0, columnspan=2, pady=5)
 
 list_frame = tk.LabelFrame(root,text="ID Aktif (Belum Kembali)",padx=10,pady=10)
 list_frame.grid(row=2,column=1,padx=10,pady=10,sticky="n")
