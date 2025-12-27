@@ -16,7 +16,7 @@ import shutil
 mutex = win32event.CreateMutex(None, False, "FQC_SAMPLE_TRACKER_MUTEX")
 
 if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
-    root = Tk()
+    root= Tk()
     root.withdraw()
     messagebox.showerror(
         "Aplikasi sudah berjalan",
